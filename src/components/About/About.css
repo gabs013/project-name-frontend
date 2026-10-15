@@ -1,0 +1,33 @@
+.about {
+  max-width: 720px;
+  margin: 72px auto 0;
+  padding-top: 40px;
+  border-top: 1px solid #dedfd7;
+  text-align: center;
+}
+
+.about__title {
+  margin: 0 0 24px;
+  font-family: Georgia, serif;
+  font-size: clamp(26px, 4vw, 32px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.about__text {
+  margin: 0 0 16px;
+  color: #59665e;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.about__text:last-child {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 600px) {
+  .about {
+    margin-top: 48px;
+    padding-top: 32px;
+  }
+}

@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from '../Header/Header.jsx';
 import Main from '../Main/Main.jsx';
 import Search from '../Search/Search.jsx';
+import Footer from '../Footer/Footer.jsx';
 import { searchBooks } from '../../utils/OpenLibraryApi.js';
 import {
   API_ERROR_MESSAGE,
@@ -66,6 +67,7 @@ function App() {
         />
         <Route path='*' element={<Navigate to='/' replace />} />
       </Routes>
+      <Footer />
     </div>
   );
 }

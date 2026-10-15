@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import About from '../About/About.jsx';
 import './Main.css';
 
 function Main() {
@@ -16,6 +17,8 @@ function Main() {
           Explorar libros
         </Link>
       </section>
+
+      <About />
     </main>
   );
 }

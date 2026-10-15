@@ -1,5 +1,6 @@
 import SearchForm from '../SearchForm/SearchForm.jsx';
 import Preloader from '../Preloader/Preloader.jsx';
+import BookCard from '../BookCard/BookCard.jsx';
 import './Search.css';
 
 function Search({
@@ -47,8 +48,8 @@ function Search({
 
           <ul className='search__results'>
             {books.slice(0, visibleCount).map((book) => (
-              <li className='search__result' key={book.key}>
-                {book.title || 'Título no disponible'}
+              <li className='search__item' key={book.key}>
+                <BookCard book={book} />
               </li>
             ))}
           </ul>
