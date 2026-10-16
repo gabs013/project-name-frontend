@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import About from '../About/About.jsx';
+import HowItWorks from '../HowItWorks/HowItWorks.jsx';
+import booksIllustration from '../../images/books-illustration.jpg';
 import './Main.css';
 
 function Main() {
@@ -16,8 +18,14 @@ function Main() {
         <Link to='/buscar' className='main__button'>
           Explorar libros
         </Link>
+        <img
+          className='main__illustration'
+          src={booksIllustration}
+          alt=''
+        />
       </section>
 
+      <HowItWorks />
       <About />
     </main>
   );
