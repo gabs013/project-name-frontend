@@ -8,7 +8,7 @@
 
 .search__title {
   margin: 0 0 24px;
-  font-family: Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-size: clamp(28px, 5vw, 40px);
   font-weight: 400;
   line-height: 1.2;
@@ -33,7 +33,7 @@
 
 .search__results-title {
   margin: 32px 0 24px;
-  font-family: Georgia, serif;
+  font-family: 'Lora', Georgia, serif;
   font-size: 28px;
   font-weight: 400;
 }
