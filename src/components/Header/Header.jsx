@@ -6,7 +6,7 @@ function Header() {
   return (
     <header className='header'>
       <Link to='/' className='header__logo'>
-        Entre páginas
+        La biblioteca de Asterión 
       </Link>
       <Navigation />
     </header>

@@ -9,11 +9,10 @@ function Main() {
     <main className='main'>
       <section className='main__hero' aria-labelledby='hero-title'>
         <h1 id='hero-title' className='main__title'>
-          Tu próxima lectura comienza aquí
+          Tu onírica lectura comienza aquí
         </h1>
         <p className='main__description'>
-          Explora libros por título o autor y encuentra nuevas
-          historias por descubrir.
+          Explora libros por título o autor y encuentra nuevos sueños taninos por descubrir.
         </p>
         <Link to='/buscar' className='main__button'>
           Explorar libros
