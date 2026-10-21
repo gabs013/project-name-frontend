@@ -6,7 +6,12 @@ function Header() {
   return (
     <header className='header'>
       <Link to='/' className='header__logo'>
-        La biblioteca de Asterión 
+      <img
+        src='/favicon.png'
+        alt=''
+        className='header__logo-icon'
+      />
+       <span>La biblioteca de Asterión</span> 
       </Link>
       <Navigation />
     </header>

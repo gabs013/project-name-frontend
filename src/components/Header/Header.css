@@ -10,6 +10,9 @@
 }
 
 .header__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;/*nuevo*/
   color: #263d32;
   font-size: 20px;
   font-weight: 700;
@@ -24,6 +27,13 @@
 .header__logo:focus-visible {
   outline: 2px solid #b64c35;
   outline-offset: 4px;
+}
+
+.header__logo-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 @media screen and (max-width: 600px) {
