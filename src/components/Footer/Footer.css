@@ -1,6 +1,8 @@
 .footer {
   margin-top: auto;
   border-top: 1px solid #dedfd7;
+  background-color: #3c241c;
+  color: #faf7f2;
 }
 
 .footer__content {
@@ -20,23 +22,23 @@
 .footer__credits,
 .footer__source {
   margin: 8px 0 0;
-  color: #59665e;
+  color: #faf7f2; /*#59665e*/
   font-size: 13px;
   line-height: 1.5;
 }
 
 .footer__link {
-  color: #263d32;
+  color: #faf7f2; /*#263d32*/
   text-underline-offset: 3px;
   transition: color 0.2s ease;
 }
 
 .footer__link:hover {
-  color: #b64c35;
+  color: #e6a58d;
 }
 
 .footer__link:focus-visible {
-  outline: 2px solid #b64c35;
+  outline: 2px solid #e6a58d;
   outline-offset: 4px;
 }
 
