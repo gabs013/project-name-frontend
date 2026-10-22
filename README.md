@@ -1,16 +1,37 @@
-# React + Vite
+# La biblioteca de Asterión
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Proyecto final desarrollado durante el bootcamp de Desarrollo Web de TripleTen.
 
-Currently, two official plugins are available:
+Aplicación web que permite buscar libros y consultar información proporcionada por Open Library.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Funcionalidades
 
-## React Compiler
+- Navegación entre la página de inicio y la página de búsqueda.
+- Búsqueda de libros mediante un formulario.
+- Tarjetas con portada, título, autores y año registrado.
+- Presentación inicial de tres resultados.
+- Botón “Mostrar más” para visualizar tres resultados adicionales.
+- Indicador de carga durante las solicitudes.
+- Mensajes para búsquedas sin resultados y errores de conexión.
+- Diseño responsivo para computadora, tableta y celular.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tecnologías
 
-## Expanding the ESLint configuration
+- React y componentes funcionales.
+- Vite.
+- React Router.
+- JavaScript y Fetch API.
+- HTML semántico y CSS con metodología BEM.
+- Flexbox y Grid.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## API
+
+El proyecto utiliza Open Library para obtener los datos y las portadas de los libros.
+
+Documentación: https://openlibrary.org/developers/api
+
+La disponibilidad de las portadas y de otros datos depende del catálogo.
+
+## Autora
+
+Gabriela Arroyo.
