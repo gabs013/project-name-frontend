@@ -11,3 +11,5 @@ export const API_ERROR_MESSAGE =
   'Lo sentimos, algo ha salido mal durante la solicitud. Es posible que haya un problema de conexión o que el servidor no funcione. Por favor, inténtalo más tarde';
 
 export const BOOK_COVERS_URL = 'https://covers.openlibrary.org/b/id';
+
+export const MAIN_API_URL = 'https://asterion-api.duckdns.org';
