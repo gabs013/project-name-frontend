@@ -65,3 +65,40 @@
   font-size: 13px;
   line-height: 1.5;
 }
+
+.book-card__action {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 20px;
+  padding: 10px 14px;
+  border: 1px solid #263d32;
+  border-radius: 8px;
+  background-color: #263d32;
+  color: #faf7f2;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.book-card__action:hover:not(:disabled) {
+  border-color: #b64c35;
+  background-color: #b64c35;
+}
+
+.book-card__action:disabled {
+  border-color: #e2e1dd;
+  background-color: #e2e1dd;
+  color: #686d68;
+  cursor: default;
+}
+
+.book-card__action:focus-visible {
+  outline: 2px solid #b64c35;
+  outline-offset: 4px;
+}
+
+.book-card__error {
+  margin: 12px 0 0;
+  color: #a33225;
+  font-size: 14px;
+  line-height: 1.5;
+}
