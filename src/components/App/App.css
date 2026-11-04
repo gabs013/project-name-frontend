@@ -3,3 +3,12 @@
   flex-direction: column;
   min-height: 100vh;
 }
+
+.app__session-error {
+  max-width: 1120px;
+  margin: 16px auto;
+  padding: 0 24px;
+  color: #a33225;
+  text-align: center;
+  line-height: 1.5;
+}
