@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import Navigation from '../Navigation/Navigation.jsx';
 import './Header.css';
 
-function Header() {
+function Header({ onOpenLogin, onSignOut }) {
   return (
     <header className='header'>
       <Link to='/' className='header__logo'>
@@ -13,7 +13,10 @@ function Header() {
       />
        <span>La biblioteca de Asterión</span> 
       </Link>
-      <Navigation />
+      <Navigation
+        onOpenLogin={onOpenLogin}
+        onSignOut={onSignOut}
+      />
     </header>
   );
 }

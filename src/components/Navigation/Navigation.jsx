@@ -1,7 +1,11 @@
+import { useContext } from 'react';
 import { NavLink } from 'react-router-dom';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 import './Navigation.css';
 
-function Navigation() {
+function Navigation({ onOpenLogin, onSignOut }) {
+  const currentUser = useContext(CurrentUserContext);
+
   const getLinkClassName = ({ isActive }) =>
     isActive
       ? 'navigation__link navigation__link_active'
@@ -19,6 +23,26 @@ function Navigation() {
           <NavLink to='/buscar' className={getLinkClassName}>
             Buscar libros
           </NavLink>
+        </li>
+        <li>
+          {currentUser ? (
+            <button
+              type='button'
+              className='navigation__button'
+              onClick={onSignOut}
+              aria-label={`Cerrar sesión de ${currentUser.name}`}
+            >
+              Cerrar sesión
+            </button>
+          ) : (
+            <button
+              type='button'
+              className='navigation__button'
+              onClick={onOpenLogin}
+            >
+              Iniciar sesión
+            </button>
+          )}
         </li>
       </ul>
     </nav>
