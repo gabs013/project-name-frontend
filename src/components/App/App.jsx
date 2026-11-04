@@ -108,6 +108,22 @@ function App() {
     setVisibleCount((count) => count + RESULTS_PER_PAGE);
   }
 
+  function clearLoginRedirect() {
+    if (location.state?.openLogin) {
+      navigate(
+        {
+          pathname: location.pathname,
+          search: location.search,
+          hash: location.hash,
+        },
+        {
+          replace: true,
+          state: null,
+        },
+      );
+    }
+  }
+
     function openLogin() {
     setAuthError('');
     setActiveModal('login');
@@ -125,6 +141,7 @@ function App() {
 
     setActiveModal('');
     setAuthError('');
+    clearLoginRedirect();
   }
 
   function handleRegister(userData) {
@@ -175,6 +192,7 @@ function App() {
         setCurrentUser(user);
         setSessionError('');
         setActiveModal('');
+        clearLoginRedirect();
       })
       .catch((requestError) => {
         setAuthError(
@@ -221,21 +239,23 @@ function App() {
           <Route
             path='/buscar'
             element={
-              <Search
-                onSearch={handleSearch}
-                books={books}
-                isLoading={isLoading}
-                error={error}
-                hasSearched={hasSearched}
-                visibleCount={visibleCount}
-                onShowMore={handleShowMore}
-              />
+              <ProtectedRoute>
+                <Search
+                  onSearch={handleSearch}
+                  books={books}
+                  isLoading={isLoading}
+                  error={error}
+                  hasSearched={hasSearched}
+                  visibleCount={visibleCount}
+                  onShowMore={handleShowMore}
+                />
+              </ProtectedRoute>
             }
           />
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
         <Footer />
-          {activeModal === 'login' && (
+          {modalName === 'login' && (
             <Login
               onClose={closeModal}
               onLogin={handleLogin}
@@ -245,7 +265,7 @@ function App() {
             />
           )}
 
-          {activeModal === 'register' && (
+          {modalName === 'register' && (
             <Register
               onClose={closeModal}
               onRegister={handleRegister}
@@ -255,7 +275,7 @@ function App() {
             />
           )}
 
-          {activeModal === 'registration-success' && (
+          {modalName === 'registration-success' && (
             <RegistrationSuccess
               onClose={closeModal}
               onOpenLogin={openLogin}
