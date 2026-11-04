@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate, useLocation, } from 'react-router-dom';
 import Header from '../Header/Header.jsx';
 import Main from '../Main/Main.jsx';
 import Search from '../Search/Search.jsx';
@@ -20,11 +20,13 @@ import {
   getCurrentUser,
 } from '../../utils/MainApi.js';
 import Preloader from '../Preloader/Preloader.jsx';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.jsx';
 
 
 function App() {
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [currentUser, setCurrentUser] = useState(null);
   const [activeModal, setActiveModal] = useState('');
@@ -37,6 +39,7 @@ function App() {
   const [visibleCount, setVisibleCount] = useState(RESULTS_PER_PAGE);
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [sessionError, setSessionError] = useState('');
+  const modalName = activeModal || (location.state?.openLogin ? 'login' : '');
 
   useEffect(() => {
     let isActive = true;
