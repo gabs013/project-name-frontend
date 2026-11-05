@@ -1,0 +1,66 @@
+.saved-books {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+.saved-books__title {
+  margin: 0 0 24px;
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.saved-books__description,
+.saved-books__count,
+.saved-books__empty {
+  margin: 0 0 24px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.saved-books__error {
+  margin: 0 0 24px;
+  color: #a33225;
+  line-height: 1.6;
+}
+
+.saved-books__link {
+  color: #b64c35;
+}
+
+.saved-books__link:focus-visible {
+  outline: 2px solid #b64c35;
+  outline-offset: 4px;
+}
+
+.saved-books__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.saved-books__item {
+  min-width: 0;
+}
+
+@media screen and (max-width: 900px) {
+  .saved-books__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .saved-books {
+    padding: 40px 16px;
+  }
+
+  .saved-books__list {
+    grid-template-columns: 1fr;
+  }
+}
