@@ -8,6 +8,7 @@ import { searchBooks } from '../../utils/OpenLibraryApi.js';
 import {
   API_ERROR_MESSAGE,
   RESULTS_PER_PAGE,
+  BOOK_COVERS_URL,
 } from '../../utils/constants.js';
 import './App.css';
 import Login from '../Login/Login.jsx';
@@ -18,6 +19,8 @@ import {
   register,
   login,
   getCurrentUser,
+  getSavedBooks,
+  saveBook,
 } from '../../utils/MainApi.js';
 import Preloader from '../Preloader/Preloader.jsx';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.jsx';
@@ -40,6 +43,12 @@ function App() {
   const [isCheckingSession, setIsCheckingSession] = useState(true);
   const [sessionError, setSessionError] = useState('');
   const modalName = activeModal || (location.state?.openLogin ? 'login' : '');
+  const [savedBooks, setSavedBooks] = useState([]);
+  const [isSavedBooksReady, setIsSavedBooksReady] = useState(false);
+  const [savedBooksError, setSavedBooksError] = useState('');
+  const [pendingBookId, setPendingBookId] = useState('');
+  const [bookActionErrors, setBookActionErrors] = useState({});
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     let isActive = true;
@@ -80,11 +89,45 @@ function App() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
+
+    let isActive = true;
+    const token = localStorage.getItem('jwt');
+
+    getSavedBooks(token)
+      .then((data) => {
+        if (!Array.isArray(data)) {
+          throw new Error('La respuesta no contiene una lista de libros.');
+        }
+
+        if (isActive) {
+          setSavedBooks(data);
+          setSavedBooksError('');
+          setIsSavedBooksReady(true);
+        }
+      })
+      .catch(() => {
+        if (isActive) {
+          setSavedBooksError(
+            'No pudimos cargar tus libros guardados. Recarga la página para intentarlo de nuevo.',
+          );
+        }
+      });
+
+    return () => {
+      isActive = false;
+    };
+  }, [currentUser]);
+
   function handleSearch(query) {
     if (isLoading) {
       return;
     }
 
+    setSearchQuery(query.trim());
     setIsLoading(true);
     setError('');
     setBooks([]);
@@ -206,6 +249,69 @@ function App() {
       });
   }
 
+    function handleSaveBook(book) {
+    if (!currentUser) {
+      openLogin();
+      return;
+    }
+
+    if (!isSavedBooksReady || pendingBookId) {
+      return;
+    }
+
+    if (savedBooks.some((savedBook) => savedBook.openLibraryId === book.key)) {
+      return;
+    }
+
+    const token = localStorage.getItem('jwt');
+
+    const bookData = {
+      openLibraryId: book.key,
+      title: book.title || 'Título no disponible',
+      authors: book.author_name || [],
+      firstPublishYear: Number.isInteger(book.first_publish_year)
+        ? book.first_publish_year
+        : null,
+      coverUrl: book.cover_i > 0
+        ? `${BOOK_COVERS_URL}/${book.cover_i}-M.jpg?default=false`
+        : '',
+      keyword: searchQuery,
+    };
+
+    setPendingBookId(book.key);
+    setBookActionErrors((previousErrors) => ({
+      ...previousErrors,
+      [book.key]: '',
+    }));
+
+    saveBook(bookData, token)
+      .then((savedBook) => {
+        if (localStorage.getItem('jwt') !== token) {
+          return;
+        }
+
+        setSavedBooks((previousBooks) => [
+          savedBook,
+          ...previousBooks,
+        ]);
+      })
+      .catch(() => {
+        if (localStorage.getItem('jwt') !== token) {
+          return;
+        }
+
+        setBookActionErrors((previousErrors) => ({
+          ...previousErrors,
+          [book.key]: 'No pudimos guardar este libro. Inténtalo de nuevo.',
+        }));
+      })
+      .finally(() => {
+        if (localStorage.getItem('jwt') === token) {
+          setPendingBookId('');
+        }
+      });
+  }
+
   function handleSignOut() {
     localStorage.removeItem('jwt');
     setCurrentUser(null);
@@ -216,6 +322,12 @@ function App() {
     setError('');
     navigate('/');
     setSessionError('');
+    setSavedBooks([]);
+    setIsSavedBooksReady(false);
+    setSavedBooksError('');
+    setPendingBookId('');
+    setBookActionErrors({});
+    setSearchQuery('');
   }
 
   if (isCheckingSession) {
@@ -248,6 +360,12 @@ function App() {
                   hasSearched={hasSearched}
                   visibleCount={visibleCount}
                   onShowMore={handleShowMore}
+                  savedBooks={savedBooks}
+                  onSaveBook={handleSaveBook}
+                  pendingBookId={pendingBookId}
+                  bookActionErrors={bookActionErrors}
+                  isSavedBooksReady={isSavedBooksReady}
+                  savedBooksError={savedBooksError}
                 />
               </ProtectedRoute>
             }

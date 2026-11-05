@@ -11,6 +11,12 @@ function Search({
   hasSearched,
   visibleCount,
   onShowMore,
+  savedBooks,
+  onSaveBook,
+  pendingBookId,
+  bookActionErrors,
+  isSavedBooksReady,
+  savedBooksError,
 }) {
   return (
     <main className='search'>
@@ -19,6 +25,12 @@ function Search({
       </h1>
 
       <SearchForm onSearch={onSearch} isLoading={isLoading} />
+
+      {savedBooksError && (
+        <p className='search__error' role='alert'>
+          {savedBooksError}
+        </p>
+      )}
 
       <div className='search__feedback' aria-live='polite'>
         {isLoading && <Preloader />}
@@ -49,7 +61,15 @@ function Search({
           <ul className='search__results'>
             {books.slice(0, visibleCount).map((book) => (
               <li className='search__item' key={book.key}>
-                <BookCard book={book} />
+                <BookCard
+                  book={book}
+                  onSave={isSavedBooksReady ? onSaveBook : undefined}
+                  isSaved={savedBooks.some(
+                    (savedBook) => savedBook.openLibraryId === book.key,
+                  )}
+                  isPending={pendingBookId === book.key}
+                  errorMessage={bookActionErrors[book.key]}
+                />
               </li>
             ))}
           </ul>
