@@ -124,6 +124,18 @@ function App() {
     };
   }, [currentUser]);
 
+  useEffect(() => {
+    if (activeModal !== 'registration-success') {
+      return;
+    }
+
+    const timeoutId = setTimeout(() => {
+      setActiveModal('');
+    }, 2000);
+
+    return () => clearTimeout(timeoutId);
+  }, [activeModal]);
+
   function handleSearch(query) {
     if (isLoading) {
       return;
@@ -189,31 +201,56 @@ function App() {
     clearLoginRedirect();
   }
 
-  function handleRegister(userData) {
+  async function startSession(credentials) {
+    const data = await login(credentials);
+
+      if (typeof data?.token !== 'string' || !data.token) {
+      throw new Error('El servidor no devolvió un token válido.');
+      }
+
+    const user = await getCurrentUser(data.token);
+
+      localStorage.setItem('jwt', data.token);
+        setCurrentUser(user);
+        setSessionError('');
+        clearLoginRedirect();
+  }
+
+  async function handleRegister(userData) {
     if (isSubmitting) {
       return;
     }
 
     setIsSubmitting(true);
     setAuthError('');
+    let accountCreated = false;
 
-    register(userData)
-      .then(() => {
-        setActiveModal('registration-success');
-      })
-      .catch((requestError) => {
+    try {
+      await register(userData);
+      accountCreated = true;
+
+      const { email, password } = userData;
+      await startSession({ email, password });
+
+      setActiveModal('registration-success');
+    } catch (requestError) {
+      if (accountCreated) {
+        setAuthError(
+          'Tu cuenta se creó, pero no pudimos iniciar sesión automáticamente. Usa el enlace «Inicia sesión» para entrar.',
+        );
+      } else {
         setAuthError(
           requestError.status === 409
             ? 'Este correo electrónico ya está registrado.'
             : 'No pudimos completar el registro. Inténtalo de nuevo.',
         );
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
-  function handleLogin(credentials) {
+  async function handleLogin(credentials) {
     if (isSubmitting) {
       return;
     }
@@ -221,34 +258,18 @@ function App() {
     setIsSubmitting(true);
     setAuthError('');
 
-    login(credentials)
-      .then((data) => {
-        if (typeof data?.token !== 'string' || !data.token) {
-          throw new Error('El servidor no devolvió un token válido.');
-        }
-
-        return getCurrentUser(data.token).then((user) => ({
-          user,
-          token: data.token,
-        }));
-      })
-      .then(({ user, token }) => {
-        localStorage.setItem('jwt', token);
-        setCurrentUser(user);
-        setSessionError('');
-        setActiveModal('');
-        clearLoginRedirect();
-      })
-      .catch((requestError) => {
-        setAuthError(
-          requestError.status === 401
-            ? 'El correo o la contraseña son incorrectos.'
-            : 'No pudimos iniciar sesión. Inténtalo de nuevo.',
-        );
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+    try {
+      await startSession(credentials);
+      setActiveModal('');
+    } catch (requestError) {
+      setAuthError(
+        requestError.status === 401
+          ? 'El correo o la contraseña son incorrectos.'
+          : 'No pudimos iniciar sesión. Inténtalo de nuevo.',
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
     function handleSaveBook(book) {
@@ -456,7 +477,6 @@ function App() {
           {modalName === 'registration-success' && (
             <RegistrationSuccess
               onClose={closeModal}
-              onOpenLogin={openLogin}
             />
           )}
       </div>
