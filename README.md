@@ -32,6 +32,9 @@ Documentación: https://openlibrary.org/developers/api
 
 La disponibilidad de las portadas y de otros datos depende del catálogo.
 
+## Aplicación desplegada 
+[La biblioteca de Asterión] (https://biblioteca-asterion.duckdns.org/)
+
 ## Autora
 
 Gabriela Arroyo.
