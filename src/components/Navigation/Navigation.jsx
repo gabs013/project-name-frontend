@@ -24,6 +24,15 @@ function Navigation({ onOpenLogin, onSignOut }) {
             Buscar libros
           </NavLink>
         </li>
+
+        {currentUser && (
+          <li>
+            <NavLink to='/guardados' className={getLinkClassName}>
+              Libros guardados
+            </NavLink>
+          </li>
+        )}
+
         <li>
           {currentUser ? (
             <button

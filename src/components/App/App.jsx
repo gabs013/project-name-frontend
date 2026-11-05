@@ -21,9 +21,11 @@ import {
   getCurrentUser,
   getSavedBooks,
   saveBook,
+  deleteBook,
 } from '../../utils/MainApi.js';
 import Preloader from '../Preloader/Preloader.jsx';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.jsx';
+import SavedBooks from '../SavedBooks/SavedBooks.jsx';
 
 
 function App() {
@@ -312,6 +314,47 @@ function App() {
       });
   }
 
+  function handleDeleteBook(book) {
+    if (!currentUser || pendingBookId) {
+      return;
+    }
+
+    const token = localStorage.getItem('jwt');
+
+    setPendingBookId(book.openLibraryId);
+    setBookActionErrors((previousErrors) => ({
+      ...previousErrors,
+      [book.openLibraryId]: '',
+    }));
+
+    deleteBook(book._id, token)
+      .then(() => {
+        if (localStorage.getItem('jwt') !== token) {
+          return;
+        }
+
+        setSavedBooks((previousBooks) =>
+          previousBooks.filter((savedBook) => savedBook._id !== book._id),
+        );
+      })
+      .catch(() => {
+        if (localStorage.getItem('jwt') !== token) {
+          return;
+        }
+
+        setBookActionErrors((previousErrors) => ({
+          ...previousErrors,
+          [book.openLibraryId]:
+            'No pudimos eliminar este libro. Inténtalo de nuevo.',
+        }));
+      })
+      .finally(() => {
+        if (localStorage.getItem('jwt') === token) {
+          setPendingBookId('');
+        }
+      });
+  }
+
   function handleSignOut() {
     localStorage.removeItem('jwt');
     setCurrentUser(null);
@@ -370,6 +413,23 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path='/guardados'
+            element={
+              <ProtectedRoute>
+                <SavedBooks
+                  books={savedBooks}
+                  isReady={isSavedBooksReady}
+                  errorMessage={savedBooksError}
+                  onDeleteBook={handleDeleteBook}
+                  pendingBookId={pendingBookId}
+                  bookActionErrors={bookActionErrors}
+                />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
         <Footer />
