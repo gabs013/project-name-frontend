@@ -1,0 +1,92 @@
+import SearchForm from '../SearchForm/SearchForm.jsx';
+import Preloader from '../Preloader/Preloader.jsx';
+import BookCard from '../BookCard/BookCard.jsx';
+import './Search.css';
+
+function Search({
+  onSearch,
+  books,
+  isLoading,
+  error,
+  hasSearched,
+  visibleCount,
+  onShowMore,
+  savedBooks,
+  onSaveBook,
+  pendingBookId,
+  bookActionErrors,
+  isSavedBooksReady,
+  savedBooksError,
+}) {
+  return (
+    <main className='search'>
+      <h1 className='search__title'>
+        Encuentra tu próxima lectura
+      </h1>
+
+      <SearchForm onSearch={onSearch} isLoading={isLoading} />
+
+      {savedBooksError && (
+        <p className='search__error' role='alert'>
+          {savedBooksError}
+        </p>
+      )}
+
+      <div className='search__feedback' aria-live='polite'>
+        {isLoading && <Preloader />}
+
+        {!isLoading && error && (
+          <p className='search__error'>{error}</p>
+        )}
+
+        {!isLoading && !error && !hasSearched && (
+          <p className='search__description'>
+            Busca un libro por título o autor.
+          </p>
+        )}
+
+        {!isLoading && !error && hasSearched && books.length === 0 && (
+          <p className='search__description'>
+            No se ha encontrado nada
+          </p>
+        )}
+      </div>
+
+      {!isLoading && !error && books.length > 0 && (
+        <section aria-labelledby='results-title'>
+          <h2 id='results-title' className='search__results-title'>
+            Resultados
+          </h2>
+
+          <ul className='search__results'>
+            {books.slice(0, visibleCount).map((book) => (
+              <li className='search__item' key={book.key}>
+                <BookCard
+                  book={book}
+                  onSave={isSavedBooksReady ? onSaveBook : undefined}
+                  isSaved={savedBooks.some(
+                    (savedBook) => savedBook.openLibraryId === book.key,
+                  )}
+                  isPending={pendingBookId === book.key}
+                  errorMessage={bookActionErrors[book.key]}
+                />
+              </li>
+            ))}
+          </ul>
+
+          {visibleCount < books.length && (
+            <button
+              className='search__more'
+              type='button'
+              onClick={onShowMore}
+            >
+              Mostrar más
+            </button>
+          )}
+        </section>
+      )}
+    </main>
+  );
+}
+
+export default Search;

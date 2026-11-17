@@ -1,0 +1,65 @@
+.main {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 64px 24px;
+}
+
+.main__hero {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.main__title {
+  margin: 0 0 24px;
+  font-family: 'Lora', Georgia, serif;
+  font-size: clamp(36px, 6vw, 56px);
+  font-weight: 400;
+  line-height: 1.1;
+}
+
+.main__description {
+  margin: 0 0 32px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.main__button {
+  display: inline-block;
+  max-width: 100%;
+  padding: 14px 32px;
+  border-radius: 6px;
+  background-color: #263d32;
+  color: #fff;
+  font-size: 16px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.main__button:hover {
+  background-color: #385747;
+}
+
+.main__button:focus-visible {
+  outline: 2px solid #b64c35;
+  outline-offset: 4px;
+}
+
+.main__illustration {
+  width: 320px;
+  max-width: 100%;
+  height: auto;
+  margin: 32px auto 0;
+  border-radius: 12px;
+}
+
+@media screen and (max-width: 600px) {
+  .main {
+    padding: 40px 16px;
+  }
+
+  .main__button {
+    width: 100%;
+  }
+}
